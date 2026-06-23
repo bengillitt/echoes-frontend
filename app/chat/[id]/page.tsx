@@ -91,6 +91,14 @@ function displayMessage(data: Chat | ErrorMessage | LoadingMessage) {
     if (data.type == "chat") {
         console.log(data.messages);
 
+        if (data.messages == null || data.messages.length == 0) {
+            return (
+                <div>
+                    <p>No Messages Found</p>
+                </div>
+            )
+        }
+
         return (
             <div>
             <ul>

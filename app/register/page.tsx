@@ -4,15 +4,21 @@ import {useState, useEffect} from "react";
 
 import { useRouter } from 'next/navigation';
 
-export default function LoginPage() {
-    const [userIdentifier, setUserIdentifier] = useState<string>("");
+export default function RegisterPage() {
+    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
     const [serverError, setServerError] = useState<string>("");
 
     const router = useRouter();
 
-    const changeUserIdentifier = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setUserIdentifier(event.target.value);
+    const changeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setUsername(event.target.value);
+    }
+
+    const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
     }
 
     const changePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,8 +46,9 @@ export default function LoginPage() {
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const response = await sendLoginToBackend({
-            user_identifier: userIdentifier,
+        const response = await sendRegisterToBackend({
+            username: username,
+            email: email,
             password: password,
         });
 
@@ -57,30 +64,33 @@ export default function LoginPage() {
     return (
         <div>
             <form onSubmit={handleLogin}>
-                <label>email/username</label><br></br>
-                <input type="text" placeholder="email/username" value={userIdentifier} onChange={changeUserIdentifier} required={true}></input><br></br><br></br>
+                <label>username</label><br></br>
+                <input type="text" placeholder="username" value={username} onChange={changeUsername} required={true}></input><br></br><br></br>
+                <label>email</label><br></br>
+                <input type="text" placeholder="email" value={email} onChange={changeEmail} required={true}></input><br></br><br></br>
                 <label>password</label><br></br>
                 <input type="password" placeholder="*********" value={password} onChange={changePassword} required={true}></input><br></br><br></br>
                 {serverError == "" ? <></> : <p>{serverError}</p>}
-                <input type="submit" value="login"></input>
+                <input type="submit" value="register"></input>
             </form>
         </div>
     )
 }
 
-interface LoginData {
-    user_identifier: String,
+interface RegisterData {
+    username: String,
+    email: String,
     password: String,
 }
 
-async function sendLoginToBackend(loginData: LoginData) {
+async function sendRegisterToBackend(registerData: RegisterData) {
     try {
-    const response = await fetch('http://localhost:8080/login', {
+    const response = await fetch('http://localhost:8080/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json', // Tells the backend you are sending JSON
       },
-      body: JSON.stringify(loginData), // Converts your JS object to a JSON string,
+      body: JSON.stringify(registerData), // Converts your JS object to a JSON string,
       credentials: "include",
     });
 

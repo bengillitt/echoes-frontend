@@ -17,6 +17,7 @@ export default function NewChat() {
     const [prompt, setPrompt] = useState<string>("");
     const [similarChats, setSimilarChats] = useState<Array<Message> | null>(null);
     const [error, setError] = useState("");
+    const [isSending, setIsSending] = useState<boolean>(false);
 
     const modalRef = useRef<HTMLDialogElement | null>(null);
 
@@ -60,11 +61,14 @@ export default function NewChat() {
     }
 
     const handleNewChat = async () => {
+        setIsSending(true);
         let data = await getNewChat({prompt: prompt});
 
         if (data.type == "ok") {
             console.log(data);
             router.push(`/chat/${data.chat_id}`)
+        } else {
+            setIsSending(false);
         }
     }
 
@@ -73,21 +77,48 @@ export default function NewChat() {
     }
     
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Ask Echoes anything..." onChange={handlePromptChange} value={prompt}></input>
-                <input type="submit" value="Send!"></input>
+        <div className="prompt-wrapper">
+            <form className="prompt-bar" onSubmit={handleSubmit}>
+                <input
+                    className="prompt-input"
+                    type="text"
+                    placeholder="Ask Echoes anything..."
+                    onChange={handlePromptChange}
+                    value={prompt}
+                />
+                <button
+                    type="submit"
+                    className="prompt-send-btn"
+                    disabled={!prompt.trim()}
+                    aria-label="Send"
+                >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12V4M4 8l4-4 4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                </button>
             </form>
 
             <dialog ref={modalRef}>
-                {similarChats == null ? <p>No Similar Chats found</p> : <div>
-                        <p>We found some similar chats</p>
+                {similarChats == null ? (
+                    <p className="modal-empty">No similar chats found</p>
+                ) : (
+                    <div>
+                        <p className="modal-heading">We found some similar chats</p>
                         {DisplayChats(similarChats)}
-                    </div>}
-
-                    <br></br>
-                    <button onClick={hideModal}>Cancel</button>
-                <button onClick={handleNewChat}>Send</button>
+                    </div>
+                )}
+                <div className="modal-actions">
+                    <button className="modal-btn-ghost" onClick={hideModal} disabled={isSending}>Cancel</button>
+                    <button className={`modal-btn-primary${isSending ? " btn-loading" : ""}`} onClick={handleNewChat} disabled={isSending}>
+                        {isSending ? (
+                            <div className="typing-indicator" style={{ padding: 0 }}>
+                                <span className="typing-dot" style={{ background: "currentColor" }} />
+                                <span className="typing-dot" style={{ background: "currentColor" }} />
+                                <span className="typing-dot" style={{ background: "currentColor" }} />
+                            </div>
+                        ) : "New chat"}
+                    </button>
+                </div>
             </dialog>
 
             {similarChats == null ? <></> : DisplayChats(similarChats)}
@@ -105,12 +136,12 @@ function DisplayChats(chatData: Array<Message>) {
     }
 
     return (
-        <div>
-            <p>Similar Chats</p>
-            <ul>
+        <div className="similar-section">
+            <div className="similar-label">Similar Chats</div>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                 {chatData.map((msg, index) => 
                     <li key={msg.id | index}>
-                        <Link href={`/chat/${msg.chat_id}`}>{msg.contents}</Link>
+                        <Link href={`/chat/${msg.chat_id}`} className="similar-chip">{msg.contents}</Link>
                     </li>
                 )}
             </ul>

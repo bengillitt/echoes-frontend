@@ -1,6 +1,7 @@
 "use client";
 
 import {useState, useEffect} from "react";
+import Link from "next/link";
 
 import { useRouter } from 'next/navigation';
 
@@ -55,15 +56,54 @@ export default function LoginPage() {
     }
 
     return (
-        <div>
-            <form onSubmit={handleLogin}>
-                <label>email/username</label><br></br>
-                <input type="text" placeholder="email/username" value={userIdentifier} onChange={changeUserIdentifier} required={true}></input><br></br><br></br>
-                <label>password</label><br></br>
-                <input type="password" placeholder="*********" value={password} onChange={changePassword} required={true}></input><br></br><br></br>
-                {serverError == "" ? <></> : <p>{serverError}</p>}
-                <input type="submit" value="login"></input>
-            </form>
+        <div className="auth-page">
+            <div className="auth-card">
+                <div>
+                    <div className="auth-logo">Echoes</div>
+                    <p className="auth-heading">Welcome back</p>
+                </div>
+
+                <div className="auth-divider" />
+
+                <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    <div className="form-group">
+                        <label className="form-label" htmlFor="user-identifier">Email / Username</label>
+                        <input
+                            id="user-identifier"
+                            className="input-field"
+                            type="text"
+                            placeholder="you@example.com"
+                            value={userIdentifier}
+                            onChange={changeUserIdentifier}
+                            required={true}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label" htmlFor="password">Password</label>
+                        <input
+                            id="password"
+                            className="input-field"
+                            type="password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={changePassword}
+                            required={true}
+                        />
+                    </div>
+
+                    {serverError !== "" && <p className="error-text">{serverError}</p>}
+
+                    <button type="submit" className="btn-primary" style={{ marginTop: "0.25rem" }}>
+                        Log in
+                    </button>
+                </form>
+
+                <p className="auth-footer">
+                    Don&apos;t have an account?{" "}
+                    <Link href="/register">Register</Link>
+                </p>
+            </div>
         </div>
     )
 }

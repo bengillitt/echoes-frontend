@@ -2,6 +2,7 @@
 
 import { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Sidebar from '../../components/Sidebar';
 
 import Cookies from "js-cookie";
 
@@ -35,8 +36,9 @@ interface LoadingMessage {
 }
 
 export default function ChatPage({ params }: Props) {
-    const [chat, setChat] = useState<Chat | ErrorMessage | LoadingMessage>({type: "loading", message: "Fetching Chat..."});
+    const [chat, setChat] = useState<Chat | ErrorMessage | LoadingMessage>({type: "loading", message: "Fetching chat..."});
     const [prompt, setPrompt] = useState<string>("");
+    const [isSending, setIsSending] = useState<boolean>(false);
 
     const [update, setUpdate] = useState<boolean>(false);
 
@@ -57,6 +59,8 @@ export default function ChatPage({ params }: Props) {
 
         console.log("Token = ", token);
 
+        setIsSending(true);
+
         let new_chat_id = await handle_chat_continuation({
             chat_id: +id,
             token: token as string,
@@ -68,19 +72,56 @@ export default function ChatPage({ params }: Props) {
         setUpdate(!update);
 
         setPrompt("");
+
+        setIsSending(false);
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPrompt(event.target.value);
+        setPrompt(event.target.value)
     }
     
     return (
-        <div>
-            {displayMessage(chat)}
-            <form action={send_chat_continuation}>
-                <input type="text" placeholder="Ask Echoes anything..." value={prompt} onChange={handleChange}></input>
-                <input type="submit" value="Send"></input>
-            </form>
+        <div className="app-layout">
+            <Sidebar activeChatId={+id} />
+            <main className="chat-main">
+                <div className="messages-scroll-area">
+                    {displayMessage(chat)}
+                    {isSending && (
+                        <div className="typing-row">
+                            <div className="message-avatar avatar-ai">E</div>
+                            <div className="typing-indicator">
+                                <span className="typing-dot" />
+                                <span className="typing-dot" />
+                                <span className="typing-dot" />
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <div className="chat-input-bar">
+                    <div className="prompt-wrapper" style={{ maxWidth: "720px", width: "100%" }}>
+                        <form className="prompt-bar" action={send_chat_continuation}>
+                            <input
+                                className="prompt-input"
+                                type="text"
+                                placeholder="Ask Echoes anything..."
+                                value={prompt}
+                                onChange={handleChange}
+                                disabled={isSending}
+                            />
+                            <button
+                                type="submit"
+                                className={`prompt-send-btn${isSending ? " btn-loading" : ""}`}
+                                disabled={!prompt.trim() || isSending}
+                                aria-label="Send"
+                            >
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 12V4M4 8l4-4 4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </main>
         </div>
     )
 }
@@ -93,25 +134,33 @@ function displayMessage(data: Chat | ErrorMessage | LoadingMessage) {
 
         if (data.messages == null || data.messages.length == 0) {
             return (
-                <div>
-                    <p>No Messages Found</p>
+                <div className="status-text">
+                    <p>No messages yet</p>
                 </div>
             )
         }
 
         return (
-            <div>
-            <ul>
-                {data.messages.map((msg, index) => (<li key={msg.id || index}>
-                    {msg.contents}
-                </li>))}
-            </ul>
+            <div className="messages-container">
+                {data.messages.map((msg, index) => {
+                    const isUser = msg.message_role === 0;
+                    return (
+                        <div key={msg.id || index} className={`message-row${isUser ? " user-row" : ""}`}>
+                            <div className={`message-avatar ${isUser ? "avatar-user" : "avatar-ai"}`}>
+                                {isUser ? "U" : "E"}
+                            </div>
+                            <div className={`message-bubble ${isUser ? "bubble-user" : "bubble-ai"}`}>
+                                {msg.contents}
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         )
     } else if (data.type == "error") {
-        return data.error;
+        return <div className="status-text">{data.error}</div>;
     } else {
-        return data.message;
+        return <div className="status-text">{data.message}</div>;
     }
 }
 

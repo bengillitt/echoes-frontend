@@ -1,6 +1,7 @@
 "use client";
 
 import {useState, useEffect} from "react";
+import Link from "next/link";
 
 import { useRouter } from 'next/navigation';
 
@@ -62,17 +63,67 @@ export default function RegisterPage() {
     }
 
     return (
-        <div>
-            <form onSubmit={handleLogin}>
-                <label>username</label><br></br>
-                <input type="text" placeholder="username" value={username} onChange={changeUsername} required={true}></input><br></br><br></br>
-                <label>email</label><br></br>
-                <input type="text" placeholder="email" value={email} onChange={changeEmail} required={true}></input><br></br><br></br>
-                <label>password</label><br></br>
-                <input type="password" placeholder="*********" value={password} onChange={changePassword} required={true}></input><br></br><br></br>
-                {serverError == "" ? <></> : <p>{serverError}</p>}
-                <input type="submit" value="register"></input>
-            </form>
+        <div className="auth-page">
+            <div className="auth-card">
+                <div>
+                    <div className="auth-logo">Echoes</div>
+                    <p className="auth-heading">Create an account</p>
+                </div>
+
+                <div className="auth-divider" />
+
+                <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    <div className="form-group">
+                        <label className="form-label" htmlFor="username">Username</label>
+                        <input
+                            id="username"
+                            className="input-field"
+                            type="text"
+                            placeholder="your_username"
+                            value={username}
+                            onChange={changeUsername}
+                            required={true}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label" htmlFor="email">Email</label>
+                        <input
+                            id="email"
+                            className="input-field"
+                            type="text"
+                            placeholder="you@example.com"
+                            value={email}
+                            onChange={changeEmail}
+                            required={true}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label" htmlFor="reg-password">Password</label>
+                        <input
+                            id="reg-password"
+                            className="input-field"
+                            type="password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={changePassword}
+                            required={true}
+                        />
+                    </div>
+
+                    {serverError !== "" && <p className="error-text">{serverError}</p>}
+
+                    <button type="submit" className="btn-primary" style={{ marginTop: "0.25rem" }}>
+                        Create account
+                    </button>
+                </form>
+
+                <p className="auth-footer">
+                    Already have an account?{" "}
+                    <Link href="/login">Log in</Link>
+                </p>
+            </div>
         </div>
     )
 }

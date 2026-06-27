@@ -3,6 +3,7 @@
 import { useState, useEffect} from 'react';
 import NewChat from "./components/NewChat";
 import LoginMenu from "./components/LoginMenu";
+import Sidebar from "./components/Sidebar";
 
 interface User {
   username: string,
@@ -28,10 +29,20 @@ export default function Home() {
 
   return (
     <div>
-      {user == null ? <LoginMenu /> : <div>
-        <p>Welcome back, {user.username}</p>
-        <NewChat />
-        </div>}
+      {user == null ? <LoginMenu /> : (
+        <div className="app-layout">
+          <Sidebar />
+          <main className="main-content">
+            <div className="home-hero">
+              <div style={{ textAlign: "center" }}>
+                <h1 className="home-greeting">What do you want to explore?</h1>
+                <p className="home-subtext">Welcome back, {user.username}</p>
+              </div>
+              <NewChat />
+            </div>
+          </main>
+        </div>
+      )}
     </div>
   )
 }

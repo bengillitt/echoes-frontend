@@ -151,7 +151,7 @@ function DisplayChats(chatData: Array<Message>) {
 
 async function getSimilarChats(promptData: prompt) {
     try {
-    const response = await fetch("http://echoesapi.bengillitt.xyz/getSimilarChats", {
+    const response = await fetch("https://echoesapi.bengillitt.xyz/getSimilarChats", {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ async function getSimilarChats(promptData: prompt) {
 
 async function getNewChat(promptData: prompt) {
     try {
-    const response = await fetch('http://echoesapi.bengillitt.xyz/createNewChat', {
+    const response = await fetch('https://echoesapi.bengillitt.xyz/createNewChat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json', // Tells the backend you are sending JSON

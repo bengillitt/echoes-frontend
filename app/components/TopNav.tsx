@@ -13,7 +13,7 @@ export default function TopNav() {
   useEffect(() => {
     // Check for token on mount and when path changes
         async function checkToken() {
-            let response = await fetch('http://echoesapi.bengillitt.xyz/me' , {
+            let response = await fetch('https://echoesapi.bengillitt.xyz/me' , {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json', // Tells the backend you are sending JSON
@@ -31,7 +31,7 @@ export default function TopNav() {
 
   const handleLogout = () => {
     const callLogout = async () => {
-      let response = await fetch('http://echoesapi.bengillitt.xyz/logout', {
+      let response = await fetch('https://echoesapi.bengillitt.xyz/logout', {
         method: 'GET',
         
         credentials: "include",

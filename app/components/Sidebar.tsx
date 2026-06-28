@@ -59,7 +59,7 @@ export default function Sidebar({ activeChatId }: SidebarProps) {
 
 async function getUserChats() {
   try {
-    const response = await fetch("http://echoesapi.bengillitt.xyz/getUserChats", {
+    const response = await fetch("https://echoesapi.bengillitt.xyz/getUserChats", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

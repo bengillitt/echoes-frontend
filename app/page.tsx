@@ -49,7 +49,7 @@ export default function Home() {
 
 async function getUser() {
   try {
-  let response = await fetch('http://echoesapi.bengillitt.xyz/me' , {
+  let response = await fetch('https://echoesapi.bengillitt.xyz/me' , {
       method: 'POST',
       headers: {
       'Content-Type': 'application/json', // Tells the backend you are sending JSON

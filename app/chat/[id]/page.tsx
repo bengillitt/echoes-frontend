@@ -170,7 +170,7 @@ interface ChatLookup {
 
 async function handle_chat(chatData: ChatLookup) {
     try {
-    const response = await fetch('http://echoesapi.bengillitt.xyz:8080/getChat', {
+    const response = await fetch('http://echoesapi.bengillitt.xyz/getChat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json', // Tells the backend you are sending JSON
@@ -199,7 +199,7 @@ interface ContinueChat {
 
 async function handle_chat_continuation(chatData: ContinueChat) {
     try {
-        const response = await fetch('http://echoesapi.bengillitt.xyz:8080/continueChat', {
+        const response = await fetch('http://echoesapi.bengillitt.xyz/continueChat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json', // Tells the backend you are sending JSON

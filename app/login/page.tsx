@@ -22,7 +22,7 @@ export default function LoginPage() {
 
     useEffect(() => {
         async function checkToken() {
-            let response = await fetch('http://localhost:8080/me' , {
+            let response = await fetch('http://echoesapi.bengillitt.xyz:8080/me' , {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json', // Tells the backend you are sending JSON
@@ -115,7 +115,7 @@ interface LoginData {
 
 async function sendLoginToBackend(loginData: LoginData) {
     try {
-    const response = await fetch('http://localhost:8080/login', {
+    const response = await fetch('http://echoesapi.bengillitt.xyz:8080/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json', // Tells the backend you are sending JSON

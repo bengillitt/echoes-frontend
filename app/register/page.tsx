@@ -28,7 +28,7 @@ export default function RegisterPage() {
 
     useEffect(() => {
         async function checkToken() {
-            let response = await fetch('http://localhost:8080/me' , {
+            let response = await fetch('http://echoesapi.bengillitt.xyz:8080/me' , {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json', // Tells the backend you are sending JSON
@@ -136,7 +136,7 @@ interface RegisterData {
 
 async function sendRegisterToBackend(registerData: RegisterData) {
     try {
-    const response = await fetch('http://localhost:8080/register', {
+    const response = await fetch('http://echoesapi.bengillitt.xyz:8080/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json', // Tells the backend you are sending JSON

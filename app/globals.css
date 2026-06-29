@@ -804,3 +804,110 @@ dialog::backdrop {
   display: flex;
   gap: 0.5rem;
 }
+
+/* ─── Mobile Responsiveness ────────────────────────────────────────────────── */
+
+.mobile-menu-btn, .mobile-close-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 60;
+    transform: translateX(-100%);
+    width: 280px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 0.5rem;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 1.1rem;
+    left: 1rem;
+    z-index: 40;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 6px;
+  }
+
+  .mobile-menu-btn:hover {
+    background: var(--bg-hover);
+  }
+
+  .mobile-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 6px;
+  }
+
+  .mobile-close-btn:hover {
+    background: var(--bg-hover);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 55;
+  }
+
+  /* Make room for top nav and hamburger menu on mobile */
+  .main-content, .chat-main {
+    padding-top: 3.5rem;
+  }
+
+  /* Make sure TopNav doesn't overlap the hamburger */
+  .top-nav {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  /* Adjust chat layout for mobile */
+  .messages-container {
+    padding: 1rem 1rem 0.5rem;
+  }
+  
+  .chat-input-bar {
+    padding: 0.75rem 1rem 1rem;
+  }
+  
+  .prompt-bar {
+    padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+  }
+  
+  .message-bubble {
+    max-width: 85%; /* Let bubbles be wider on small screens */
+  }
+}

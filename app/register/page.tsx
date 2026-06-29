@@ -66,7 +66,10 @@ export default function RegisterPage() {
         <div className="auth-page">
             <div className="auth-card">
                 <div>
-                    <div className="auth-logo">Echoes</div>
+                    <div className="auth-logo" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
+                        <img src="/icon.png" alt="Echoes Logo" style={{ width: "32px", height: "32px", borderRadius: "6px" }} />
+                        Echoes
+                    </div>
                     <p className="auth-heading">Create an account</p>
                 </div>
 
